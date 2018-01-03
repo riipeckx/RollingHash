@@ -11,14 +11,13 @@
 int main(void) {
     int fd;
     int size;
-    int* allocatedMemory = NULL;
-
-    allocatedMemory = malloc(size * sizeof(int));
+    char* allocatedMemory = NULL;
 
     fd = open("c:/input.txt", O_RDONLY, 0666);
     size = lseek(fd, 0, SEEK_END);
     lseek(fd, 0, SEEK_SET);
-    printf("Allocated memory = %d\n", allocatedMemory);
+    allocatedMemory = malloc(size);
+    printf("Allocated memory = %p (%d)\n", allocatedMemory, size);
 
 //Input file verification method
     if (size == -1) {
