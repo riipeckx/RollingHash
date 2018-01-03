@@ -1,23 +1,26 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
+#define MY_BUFFER_SIZE size
 
-int main()
+int main(void)
 {
     int fd;
-    int i;
+    int size;
+    char mybuffer[size];
 
     fd = open("c:/input.txt", O_RDONLY, 0666);
-    i = lseek(fd, 0, SEEK_END);
-    close(fd);
+    size = lseek(fd, 0, SEEK_END);
+    lseek(fd, 0, SEEK_SET);
+    printf("buffer size = %d\n", mybuffer);
 
 //Input file verification method
-    if (i==-1){
+    if (size==-1){
         printf("The file isn't correct\n");
         printf("err = %s\n", strerror(errno));
     }
     else{
-        printf("size = %d\n", i);
+        printf("The file conatins %d caracters.\n", size);
     }
 
     return 0;
