@@ -9,48 +9,44 @@
  * free = Désallouer de l'espace mémoire
  */
 
-//variables declaration
-int fd;
-int size;
-char* allocatedMemory = NULL;
-char textInBuffer = 0;
+char* loadFile(char* given_file, int* p_size){
 
-void fileOpening(){
-    fd = open("c:/input.txt", O_RDONLY, 0666);
-};
+    int fd;
+    char* allocatedMemory = NULL;
 
-void fileSize(){
-    size = lseek(fd, 0, SEEK_END);
-};
+    fd = open(given_file, O_RDONLY, 0666);
 
-void memoryAllocation(){
+    *p_size = lseek(fd, 0, SEEK_END);
     lseek(fd, 0, SEEK_SET);
-    allocatedMemory = malloc(size);
-    printf("Allocated memory = %p (%d)\n", allocatedMemory, size);
-};
+    allocatedMemory = malloc(*p_size);
+    printf("Allocated memory = %p (%d)\n", allocatedMemory, *p_size);
 
-void memoryDeallocation(){
-    free(allocatedMemory);
-};
+    read(fd, allocatedMemory, *p_size);
 
-void fileVerification(){
+    close(fd);
+
+
+    /*
     if (size == -1) {
         printf("The file isn't correct\n");
         printf("err = %s\n", strerror(errno));
     } else {
         printf("The file contains %d characters.\n", size);
-    }
+    }*/
+
+    //close
+
+    return allocatedMemory;
 };
 
 int main(void) {
+    char* buffer;
+    int size;
+    int i = 0;
 
-    fileOpening();
-    fileSize();
+//Input file verification method
+    buffer = loadFile("c:/input.txt", &size);
 
-    memoryAllocation();
-
-    fileVerification();
-
-    memoryDeallocation();
+    printf("%d\n",size);
     return 0;
 }
