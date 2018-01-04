@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <fcntl.h>
-#include <errno.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 char* loadFile(char* given_file, int* p_size){
 
@@ -20,15 +18,21 @@ char* loadFile(char* given_file, int* p_size){
     return allocatedMemory;
 };
 
+
+
 int main(void) {
+    /* Variables */
     char* buffer;
     int size;
     int i;
 
+    /* Buffer */
     buffer = loadFile("c:/input.txt", &size);
     printf("%d\n",size);
-    for(i=0;i<size;i++){
-        printf("%c", buffer[i]);
+    for(i=0;i<size-2;i++){
+        int csum = 33*33*buffer[i] + 33*buffer[i+1] + buffer[i+2];
+        printf("%d %c,%c,%c %d \n ", i, buffer[i], buffer[i+1], buffer[i+2], csum);
     }
+
     return 0;
 }
