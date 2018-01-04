@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 char* loadFile(char* given_file, int* p_size){
 
@@ -26,16 +25,26 @@ int main(void) {
     char* buffer;
     int size;
     int i;
+    int csum;
 
-    /* Buffer */
+    /* Load File */
     buffer = loadFile("c:/input.txt", &size);
     printf("%d\n",size);
-    for(i=0;i<size-2;i++){
-        int csum = 33*33*buffer[i] + 33*buffer[i+1] + buffer[i+2];
-        printf("%d %c,%c,%c %d \n ", i, buffer[i], buffer[i+1], buffer[i+2], csum);
+
+    /* Rolling Checksum */
+    csum = 33*33*buffer[0] + 33*buffer[1] + buffer[2];
+    printf("csum[0] = %d \n", csum);
+
+    for(i=0;i<size-3;i++){
+        csum = csum - 33*33*buffer[i];
+        csum = csum * 33;
+        csum = csum + buffer[i+3];
+        printf("csum[%d] = %d \n", i+1, csum);
     }
 
-    printf("Press any key to continue...");
-    read(0, &i, 1);
+
+    //printf("Press any key to continue...");
+    //read(0, &i, 1);
+
     return 0;
 }
