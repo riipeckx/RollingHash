@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 char* loadFile(char* given_file, int* p_size){
 
@@ -34,5 +35,7 @@ int main(void) {
         printf("%d %c,%c,%c %d \n ", i, buffer[i], buffer[i+1], buffer[i+2], csum);
     }
 
+    printf("Press any key to continue...");
+    read(0, &i, 1);
     return 0;
 }
