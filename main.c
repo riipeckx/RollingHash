@@ -42,11 +42,14 @@ char* loadFile(char* given_file, int* p_size){
 int main(void) {
     char* buffer;
     int size;
-    int i = 0;
+    int i;
 
-//Input file verification method
     buffer = loadFile("c:/input.txt", &size);
 
     printf("%d\n",size);
+
+    for(i=0;i<size;i++){
+        printf("%c", buffer[i]);
+    }
     return 0;
 }
