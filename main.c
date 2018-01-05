@@ -39,6 +39,7 @@ void quit (void){
 
 int main (void) {
     // Variables
+    char path;
     uint8_t *buffer;
     int size;
     int i;
@@ -46,10 +47,13 @@ int main (void) {
     int remove[256];
     int a = csum;
 
+
+
     // Clock
     clock_t start, stop;
 
     start = clock();
+
 
 
     // Pre-Calculating
@@ -58,8 +62,9 @@ int main (void) {
     }
 
 
+
      // Load File
-    buffer = loadFile("/home/riipeckx/C/RollingHash/a.out", &size);
+    buffer = loadFile("/home/riipeckx/C/RollingHash/input.txt", &size);
 
 
 
@@ -72,12 +77,18 @@ int main (void) {
         csum = csum * 33;
         csum = csum + buffer[i + 3];
         //printf("csum[%d] = [%d] %d\n", i+1,  (int)buffer[i], csum);
-        printf("0x%X \n", csum);
+        int csum_hex = csum & 0xFFF;
+        printf("0x%03x \n",csum_hex);
     }
+
+
 
     stop = clock();
 
+
+
     printf("time = %f\n", (double)(stop - start) / CLOCKS_PER_SEC);
+
 
 
     quit();
