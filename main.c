@@ -40,8 +40,6 @@ int main (void) {
     int i;
     int csum;
     int remove[256];
-    int N;
-    char **P;
 
     // Pre-Calculating
     for (i=0; i<256;i++){
