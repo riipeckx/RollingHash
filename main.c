@@ -7,7 +7,9 @@
 #include <time.h>
 #include <stdint.h>
 
-uint8_t * loadFile (char* given_file, int* p_size) {
+#define HSIZE 16
+
+uint8_t * loadFile (char* given_file, int* p_size){
     int fd;
     uint8_t *allocatedMemory = NULL;
 
@@ -29,8 +31,6 @@ uint8_t * loadFile (char* given_file, int* p_size) {
     };
 };
 
-
-
 void quit (void){
     int i;
     printf("Press any key to continue...");
@@ -38,59 +38,70 @@ void quit (void){
 };
 
 int main (void) {
+
     // Variables
     char path;
     uint8_t *buffer;
     int size;
-    int i;
+    int i, j;
     int csum;
     int remove[256];
     int a = csum;
+    int *hashTable;
 
-
+    // hashTable
+    hashTable = (int *)malloc(HSIZE * sizeof(int));
+    memset(hashTable, -1, HSIZE * sizeof(int));
 
     // Clock
     clock_t start, stop;
 
     start = clock();
 
-
-
     // Pre-Calculating
     for (i=0; i<256;i++){
         remove[i] = 33 * 33 * i;
     }
 
-
-
      // Load File
-    buffer = loadFile("/home/riipeckx/C/RollingHash/input.txt", &size);
-
-
+    buffer = loadFile("1GB.zip", &size);
 
      // Rolling Checksum
     csum = 33 * 33 * buffer[0] + 33 * buffer[1] + buffer[2];
     //printf("csum[0] = %d \n", csum);
 
     for (i = 0; i < size - 3; i++) {
+
+        //printf("#%-8d ", i);
+        //for (j=0; j<HSIZE; j++) printf(" %3d", hashTable[j]);
+        //printf(" | %3d (%c%c%c)\n", csum % HSIZE, buffer[i], buffer[i+1], buffer[i+2]);
+
+        hashTable[csum % HSIZE] = i;
+
+        //int csum_hex;
         csum = csum - remove[buffer[i]];
         csum = csum * 33;
         csum = csum + buffer[i + 3];
-        //printf("csum[%d] = [%d] %d\n", i+1,  (int)buffer[i], csum);
-        int csum_hex = csum & 0xFFF;
-        printf("0x%03x \n",csum_hex);
     }
-
-
-
     stop = clock();
-
-
 
     printf("time = %f\n", (double)(stop - start) / CLOCKS_PER_SEC);
 
+    for (i=0; i<HSIZE; i++) printf("%d ", hashTable[i]);
+    printf("\n");
 
 
-    quit();
+    /*printf("sizeof char = %d\n", sizeof(char));
+    printf("sizeof int = %d\n", sizeof(int));
+    printf("sizeof long int = %d\n", sizeof(long int));
+    printf("sizeof long long int = %d\n", sizeof(long long int));
+    printf("sizeof short int = %d\n", sizeof(short int));*/
+
+    //for (i=0; i<8; i++) hashTable[i]= -1;
+
+
+
+    //quit();
     return 0;
+
 };
